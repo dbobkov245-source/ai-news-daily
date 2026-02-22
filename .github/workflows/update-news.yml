@@ -1,0 +1,137 @@
+name: Daily AI News Update
+
+on:
+  schedule:
+    - cron: '30 6 * * *'  # 9:30 Moscow time (6:30 UTC)
+  workflow_dispatch:
+    inputs:
+      news1_title:
+        description: 'News 1 title'
+        required: true
+      news1_desc:
+        description: 'News 1 description'
+        required: true
+      news1_url:
+        description: 'News 1 URL'
+        required: true
+      news1_source:
+        description: 'News 1 source'
+        required: true
+      news2_title:
+        description: 'News 2 title'
+        required: true
+      news2_desc:
+        description: 'News 2 description'
+        required: true
+      news2_url:
+        description: 'News 2 URL'
+        required: true
+      news2_source:
+        description: 'News 2 source'
+        required: true
+      news3_title:
+        description: 'News 3 title'
+        required: true
+      news3_desc:
+        description: 'News 3 description'
+        required: true
+      news3_url:
+        description: 'News 3 URL'
+        required: true
+      news3_source:
+        description: 'News 3 source'
+        required: true
+      news4_title:
+        description: 'News 4 title'
+        required: true
+      news4_desc:
+        description: 'News 4 description'
+        required: true
+      news4_url:
+        description: 'News 4 URL'
+        required: true
+      news4_source:
+        description: 'News 4 source'
+        required: true
+      news5_title:
+        description: 'News 5 title'
+        required: true
+      news5_desc:
+        description: 'News 5 description'
+        required: true
+      news5_url:
+        description: 'News 5 URL'
+        required: true
+      news5_source:
+        description: 'News 5 source'
+        required: true
+
+jobs:
+  update-site:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update index.html
+        run: |
+          cat > index.html << 'HTMLFILE'
+          <!DOCTYPE html>
+          <html lang="ru">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>AI News Daily</title>
+            <style>
+              :root { --bg: #0a0a0a; --card-bg: #141414; --text: #e5e5e5; --text-secondary: #a3a3a3; --accent: #3b82f6; --border: #262626; }
+              * { box-sizing: border-box; margin: 0; padding: 0; }
+              body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+              .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+              header { text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+              header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+              .subtitle { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 1.5rem; }
+              .meta { display: flex; justify-content: center; gap: 1.5rem; color: var(--text-secondary); font-size: 0.9rem; }
+              .news-grid { display: grid; gap: 1.5rem; }
+              .news-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
+              .news-card h2 { font-size: 1.25rem; margin-bottom: 0.75rem; }
+              .news-card p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem; }
+              .card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+              .source { color: var(--accent); font-size: 0.85rem; font-weight: 500; }
+              .card-footer a { color: var(--text); text-decoration: none; }
+              footer { text-align: center; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-secondary); }
+            </style>
+          </head>
+          <body>
+            <main class="container">
+              <header>
+                <h1>🤖 AI News Daily</h1>
+                <p class="subtitle">Новости искусственного интеллекта</p>
+                <div class="meta">
+                  <span>Обновлено: ${{ env.UPDATED }}</span>
+                </div>
+              </header>
+              <section class="news-grid" id="newsGrid"></section>
+              <footer><p>AI News Daily — автоматическая подборка</p></footer>
+            </main>
+            <script>
+              const news = [
+                { title: "${{ github.event.inputs.news1_title }}", description: "${{ github.event.inputs.news1_desc }}", url: "${{ github.event.inputs.news1_url }}", source: "${{ github.event.inputs.news1_source }}" },
+                { title: "${{ github.event.inputs.news2_title }}", description: "${{ github.event.inputs.news2_desc }}", url: "${{ github.event.inputs.news2_url }}", source: "${{ github.event.inputs.news2_source }}" },
+                { title: "${{ github.event.inputs.news3_title }}", description: "${{ github.event.inputs.news3_desc }}", url: "${{ github.event.inputs.news3_url }}", source: "${{ github.event.inputs.news3_source }}" },
+                { title: "${{ github.event.inputs.news4_title }}", description: "${{ github.event.inputs.news4_desc }}", url: "${{ github.event.inputs.news4_url }}", source: "${{ github.event.inputs.news4_source }}" },
+                { title: "${{ github.event.inputs.news5_title }}", description: "${{ github.event.inputs.news5_desc }}", url: "${{ github.event.inputs.news5_url }}", source: "${{ github.event.inputs.news5_source }}" }
+              ];
+              document.getElementById('newsGrid').innerHTML = news.map(n => `<article class="news-card"><h2>${n.title}</h2><p>${n.description}</p><div class="card-footer"><span class="source">${n.source}</span><a href="${n.url}" target="_blank">Читать →</a></div></article>`).join('');
+            </script>
+          </body>
+          </html>
+          HTMLFILE
+          echo "Updated at $(date)" > .lastupdate
+
+      - name: Commit and push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add index.html
+          git commit -m "Update news $(date +%Y-%m-%d)" || echo "No changes"
+          git push
