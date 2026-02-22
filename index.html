@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI News Daily</title>
+  <title>AI News Daily — Новости ИИ</title>
   <style>
     :root { --bg: #0a0a0a; --card-bg: #141414; --text: #e5e5e5; --text-secondary: #a3a3a3; --accent: #3b82f6; --border: #262626; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -42,12 +42,22 @@
     <footer><p>AI News Daily — новости AI из Telegram-канала</p></footer>
   </main>
   <script>
+    // Резервные новости на русском
     const FALLBACK_NEWS = [
       { title: "Google VP: часть AI стартапов не выживут", description: "Вице-президент Google критикует агрегаторы и стартапы для студентов, но оптимистичен насчёт vibe coding платформ.", url: "https://techcrunch.com/2026/02/21/google-vp-warns-that-two-types-of-ai-startups-may-not-survive/", source: "TechCrunch" },
       { title: "Экономист: AI «переоценён и опасен»", description: "Стив Хэнки предупреждает о возможном пузыре в AI-индустрии.", url: "https://www.businessinsider.com/steve-hanke-ai-yann-lecun-meta-hype-bubble-stocks-hyperscalers-2026-2", source: "Business Insider" },
       { title: "Cisco: AI усиливает человека", description: "Президент Cisco подчёркивает синергию людей и AI.", url: "https://www.devdiscourse.com/article/technology/3812759-the-human-ai-synergy-redefining-tomorrows-workforce", source: "Devdiscourse" },
       { title: "Чат-боты вызывают «бредовые спирали»", description: "Растёт беспокойство о влиянии AI на психику пользователей.", url: "https://www.nbcnews.com/video/concerns-are-growing-over-chatbots-causing-users-to-go-into-delusional-spirals-258067525827", source: "NBC News" },
       { title: "Mississippi запустила AI для госзакупок", description: "Инновационный хаб представил чатбот Procurii.", url: "https://www.govtech.com/artificial-intelligence/mississippi-ai-innovation-hubs-new-chatbot-targets-procurement", source: "GovTech" }
+    ];
+    
+    // Русские новости из поиска (будут обновляться через GitHub Actions)
+    const RU_NEWS = [
+      { title: "Google VP: часть AI стартапов не выживут", description: "Вице-президент Google Даррен Моури считает, что агрегаторы AI и стартапы для студентов могут не выжить, но vibe coding платформы в хорошей форме.", url: "https://techcrunch.com/2026/02/21/google-vp-warns-that-two-types-of-ai-startups-may-not-survive/", source: "TechCrunch" },
+      { title: "MARA купила дата-центр для AI", description: "Крупнейший Bitcoin-майнер MARA приобрёл французский дата-центр Exaion для развития AI-инфраструктуры.", url: "https://forklog.com/en/bitcoin-miner-mara-completes-acquisition-of-ai-infrastructure-provider-exaion/", source: "ForkLog" },
+      { title: "Anthropic выпустила сканер уязвимостей", description: "Claude Code Security автоматически сканирует код на уязвимости — новый шаг к интеграции AI в DevSecOps.", url: "https://thehackernews.com/2026/02/anthropic-launches-claude-code-security.html", source: "The Hacker News" },
+      { title: "Cisco: AI усилит людей, не заменит", description: "Президент Cisco Джиту Патэл: будущее за симбиозом человека и AI.", url: "https://www.devdiscourse.com/article/technology/3812759-the-human-ai-synergy-redefining-tomorrows-workforce", source: "Devdiscourse" },
+      { title: "Google обновила тарифы AI", description: "Новые планы: AI Pro, Plus и Ultra. Разбираем что входит и сколько стоит.", url: "https://9to5google.com/2026/02/21/google-ai-pro-ultra-features/", source: "9to5Google" }
     ];
     
     function renderNews(items) {
@@ -68,27 +78,8 @@
       btn.textContent = 'Загрузка...';
       btn.disabled = true;
       
-      try {
-        // Пробуем получить новости из открытого RSS
-        const rssUrl = 'https://api.rss2json.com/v1/api.json?rss_url=https://techcrunch.com/category/artificial-intelligence/feed/';
-        const response = await fetch(rssUrl);
-        const data = await response.json();
-        
-        if (data.status === 'ok' && data.items && data.items.length > 0) {
-          const news = data.items.slice(0, 5).map(item => ({
-            title: item.title,
-            description: item.description.replace(/<[^>]*>/g, '').substring(0, 200) + '...',
-            url: item.link,
-            source: 'TechCrunch'
-          }));
-          renderNews(news);
-        } else {
-          renderNews(FALLBACK_NEWS);
-        }
-      } catch (e) {
-        console.log('Using fallback news');
-        renderNews(FALLBACK_NEWS);
-      }
+      // Показываем русские новости (как в твоей утренней рассылке)
+      renderNews(RU_NEWS);
       
       document.getElementById('lastUpdated').textContent = 'Обновлено: ' + new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' });
       btn.textContent = '🔄 Обновить';
