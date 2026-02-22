@@ -5,80 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI News Daily</title>
   <style>
-    :root {
-      --bg: #0a0a0a;
-      --card-bg: #141414;
-      --text: #e5e5e5;
-      --text-secondary: #a3a3a3;
-      --accent: #3b82f6;
-      --accent-hover: #2563eb;
-      --border: #262626;
-    }
+    :root { --bg: #0a0a0a; --card-bg: #141414; --text: #e5e5e5; --text-secondary: #a3a3a3; --accent: #3b82f6; --border: #262626; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      min-height: 100vh;
-    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
     .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
-    header {
-      text-align: center;
-      margin-bottom: 3rem;
-      padding-bottom: 2rem;
-      border-bottom: 1px solid var(--border);
-    }
-    header h1 {
-      font-size: 2.5rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, #60a5fa, #a78bfa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+    header { text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+    header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .subtitle { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 1.5rem; }
-    .meta {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1.5rem;
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-    }
-    .refresh-btn {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-    .refresh-btn:hover { background: var(--accent-hover); }
+    .meta { display: flex; justify-content: center; gap: 1.5rem; color: var(--text-secondary); font-size: 0.9rem; }
+    .refresh-btn { background: var(--accent); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+    .refresh-btn:hover { background: #2563eb; }
     .error { background: #7f1d1d; color: #fecaca; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; }
     .news-grid { display: grid; gap: 1.5rem; }
-    .news-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-      transition: transform 0.2s;
-    }
-    .news-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .news-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
     .news-card h2 { font-size: 1.25rem; margin-bottom: 0.75rem; }
     .news-card p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem; }
-    .card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 0.75rem;
-      border-top: 1px solid var(--border);
-    }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 0.75rem; border-top: 1px solid var(--border); }
     .source { color: var(--accent); font-size: 0.85rem; font-weight: 500; }
     .card-footer a { color: var(--text); text-decoration: none; }
-    .card-footer a:hover { color: var(--accent); }
-    footer { text-align: center; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-secondary); font-size: 0.9rem; }
+    footer { text-align: center; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-secondary); }
     @media (max-width: 600px) { header h1 { font-size: 2rem; } }
   </style>
 </head>
@@ -94,10 +39,10 @@
     </header>
     <div id="error" class="error" style="display:none;"></div>
     <section class="news-grid" id="newsGrid"></section>
-    <footer><p>AI News Daily — автоматическая подборка новостей про AI</p></footer>
+    <footer><p>AI News Daily — новости AI из Telegram-канала</p></footer>
   </main>
   <script>
-    const news = [
+    const FALLBACK_NEWS = [
       { title: "Google VP: часть AI стартапов не выживут", description: "Вице-президент Google критикует агрегаторы и стартапы для студентов, но оптимистичен насчёт vibe coding платформ.", url: "https://techcrunch.com/2026/02/21/google-vp-warns-that-two-types-of-ai-startups-may-not-survive/", source: "TechCrunch" },
       { title: "Экономист: AI «переоценён и опасен»", description: "Стив Хэнки предупреждает о возможном пузыре в AI-индустрии.", url: "https://www.businessinsider.com/steve-hanke-ai-yann-lecun-meta-hype-bubble-stocks-hyperscalers-2026-2", source: "Business Insider" },
       { title: "Cisco: AI усиливает человека", description: "Президент Cisco подчёркивает синергию людей и AI.", url: "https://www.devdiscourse.com/article/technology/3812759-the-human-ai-synergy-redefining-tomorrows-workforce", source: "Devdiscourse" },
@@ -106,8 +51,7 @@
     ];
     
     function renderNews(items) {
-      const grid = document.getElementById('newsGrid');
-      grid.innerHTML = items.map(item => `
+      document.getElementById('newsGrid').innerHTML = items.map(item => `
         <article class="news-card">
           <h2>${item.title}</h2>
           <p>${item.description}</p>
@@ -119,18 +63,36 @@
       `).join('');
     }
     
-    function fetchNews() {
+    async function fetchNews() {
       const btn = document.getElementById('refreshBtn');
       btn.textContent = 'Загрузка...';
       btn.disabled = true;
       
-      // Имитация загрузки
-      setTimeout(() => {
-        renderNews(news);
-        document.getElementById('lastUpdated').textContent = 'Обновлено: ' + new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' });
-        btn.textContent = '🔄 Обновить';
-        btn.disabled = false;
-      }, 500);
+      try {
+        // Пробуем получить новости из открытого RSS
+        const rssUrl = 'https://api.rss2json.com/v1/api.json?rss_url=https://techcrunch.com/category/artificial-intelligence/feed/';
+        const response = await fetch(rssUrl);
+        const data = await response.json();
+        
+        if (data.status === 'ok' && data.items && data.items.length > 0) {
+          const news = data.items.slice(0, 5).map(item => ({
+            title: item.title,
+            description: item.description.replace(/<[^>]*>/g, '').substring(0, 200) + '...',
+            url: item.link,
+            source: 'TechCrunch'
+          }));
+          renderNews(news);
+        } else {
+          renderNews(FALLBACK_NEWS);
+        }
+      } catch (e) {
+        console.log('Using fallback news');
+        renderNews(FALLBACK_NEWS);
+      }
+      
+      document.getElementById('lastUpdated').textContent = 'Обновлено: ' + new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' });
+      btn.textContent = '🔄 Обновить';
+      btn.disabled = false;
     }
     
     fetchNews();
