@@ -3,46 +3,332 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI News Daily — Новости ИИ</title>
+  <title>🤖 AI News Daily — Новости ИИ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root { --bg: #0a0a0a; --card-bg: #141414; --text: #e5e5e5; --text-secondary: #a3a3a3; --accent: #3b82f6; --border: #262626; }
+    :root {
+      --bg-deep: #050505;
+      --bg-card: #0f0f0f;
+      --bg-card-hover: #161616;
+      --text-primary: #f5f5f5;
+      --text-secondary: #888888;
+      --accent: #00ff88;
+      --accent-dim: #00cc6a;
+      --accent-glow: rgba(0, 255, 136, 0.15);
+      --border: #1a1a1a;
+      --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
+      --gradient-2: linear-gradient(180deg, transparent 0%, rgba(0, 255, 136, 0.03) 100%);
+    }
+    
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
-    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
-    header { text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
-    header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .subtitle { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 1.5rem; }
-    .meta { display: flex; justify-content: center; gap: 1.5rem; color: var(--text-secondary); font-size: 0.9rem; }
-    .refresh-btn { background: var(--accent); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
-    .refresh-btn:hover { background: #2563eb; }
-    .error { background: #7f1d1d; color: #fecaca; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; }
-    .news-grid { display: grid; gap: 1.5rem; }
-    .news-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
-    .news-card h2 { font-size: 1.25rem; margin-bottom: 0.75rem; }
-    .news-card p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem; }
-    .card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 0.75rem; border-top: 1px solid var(--border); }
-    .source { color: var(--accent); font-size: 0.85rem; font-weight: 500; }
-    .card-footer a { color: var(--text); text-decoration: none; }
-    footer { text-align: center; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-secondary); }
-    @media (max-width: 600px) { header h1 { font-size: 2rem; } }
+    
+    body {
+      font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    /* Atmospheric background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(ellipse 80% 50% at 50% -20%, var(--accent-glow) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(0, 204, 255, 0.05) 0%, transparent 40%),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(255, 255, 255, 0.008) 2px,
+          rgba(255, 255, 255, 0.008) 4px
+        );
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+    
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 4rem;
+      position: relative;
+    }
+    
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 1px;
+      background: var(--gradient-1);
+    }
+    
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeSlideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+    }
+    
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      animation: fadeSlideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+      opacity: 0;
+    }
+    
+    .meta-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .last-updated {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      font-family: 'Space Grotesk', sans-serif;
+      animation: fadeSlideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+      opacity: 0;
+    }
+    
+    .refresh-btn {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent-dim);
+      padding: 0.6rem 1.2rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      animation: fadeSlideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+      opacity: 0;
+    }
+    
+    .refresh-btn:hover {
+      background: var(--accent);
+      color: var(--bg-deep);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+    
+    .refresh-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    /* Error */
+    .error {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+      padding: 1.25rem;
+      border-radius: 8px;
+      margin-bottom: 2.5rem;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    /* News Grid */
+    .news-grid {
+      display: grid;
+      gap: 1.25rem;
+    }
+    
+    .news-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+    }
+    
+    .news-card:nth-child(1) { animation-delay: 0.1s; }
+    .news-card:nth-child(2) { animation-delay: 0.2s; }
+    .news-card:nth-child(3) { animation-delay: 0.3s; }
+    .news-card:nth-child(4) { animation-delay: 0.4s; }
+    .news-card:nth-child(5) { animation-delay: 0.5s; }
+    
+    .news-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--gradient-1);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .news-card:hover {
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+      border-color: var(--accent-dim);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+    
+    .news-card:hover::before {
+      opacity: 1;
+    }
+    
+    .news-card h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      line-height: 1.4;
+      color: var(--text-primary);
+    }
+    
+    .news-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 1.25rem;
+      line-height: 1.6;
+    }
+    
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    
+    .source {
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: 'Space Grotesk', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .card-footer a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    
+    .card-footer a:hover {
+      color: var(--accent);
+    }
+    
+    .card-footer a::after {
+      content: '→';
+      transition: transform 0.2s ease;
+    }
+    
+    .card-footer a:hover::after {
+      transform: translateX(4px);
+    }
+    
+    /* Footer */
+    footer {
+      text-align: center;
+      margin-top: 5rem;
+      padding-top: 2rem;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+    
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    
+    /* Animations */
+    @keyframes fadeSlideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    /* Responsive */
+    @media (max-width: 600px) {
+      .container { padding: 2rem 1rem; }
+      header { margin-bottom: 3rem; }
+      .news-card { padding: 1.25rem; }
+      .meta-bar { gap: 1rem; }
+    }
   </style>
 </head>
 <body>
   <main class="container">
     <header>
-      <h1>🤖 AI News Daily</h1>
+      <h1 class="logo">AI News Daily</h1>
       <p class="subtitle">Новости искусственного интеллекта</p>
-      <div class="meta">
-        <span id="lastUpdated">Загрузка...</span>
-        <button onclick="fetchNews()" class="refresh-btn" id="refreshBtn">🔄 Обновить</button>
+      <div class="meta-bar">
+        <span class="last-updated" id="lastUpdated">Загрузка...</span>
+        <button onclick="fetchNews()" class="refresh-btn" id="refreshBtn">Обновить</button>
       </div>
     </header>
+    
     <div id="error" class="error" style="display:none;"></div>
+    
     <section class="news-grid" id="newsGrid"></section>
-    <footer><p>AI News Daily — новости AI из Telegram-канала</p></footer>
+    
+    <footer>
+      <p>AI News Daily — <a href="https://t.me/ainewsdm" target="_blank">@ainewsdm</a></p>
+    </footer>
   </main>
+  
   <script>
-    // Резервные новости на русском
     const FALLBACK_NEWS = [
       { title: "Google VP: часть AI стартапов не выживут", description: "Вице-президент Google критикует агрегаторы и стартапы для студентов, но оптимистичен насчёт vibe coding платформ.", url: "https://techcrunch.com/2026/02/21/google-vp-warns-that-two-types-of-ai-startups-may-not-survive/", source: "TechCrunch" },
       { title: "Экономист: AI «переоценён и опасен»", description: "Стив Хэнки предупреждает о возможном пузыре в AI-индустрии.", url: "https://www.businessinsider.com/steve-hanke-ai-yann-lecun-meta-hype-bubble-stocks-hyperscalers-2026-2", source: "Business Insider" },
@@ -51,7 +337,6 @@
       { title: "Mississippi запустила AI для госзакупок", description: "Инновационный хаб представил чатбот Procurii.", url: "https://www.govtech.com/artificial-intelligence/mississippi-ai-innovation-hubs-new-chatbot-targets-procurement", source: "GovTech" }
     ];
     
-    // Русские новости из поиска (будут обновляться через GitHub Actions)
     const RU_NEWS = [
       { title: "Google VP: часть AI стартапов не выживут", description: "Вице-президент Google Даррен Моури считает, что агрегаторы AI и стартапы для студентов могут не выжить, но vibe coding платформы в хорошей форме.", url: "https://techcrunch.com/2026/02/21/google-vp-warns-that-two-types-of-ai-startups-may-not-survive/", source: "TechCrunch" },
       { title: "MARA купила дата-центр для AI", description: "Крупнейший Bitcoin-майнер MARA приобрёл французский дата-центр Exaion для развития AI-инфраструктуры.", url: "https://forklog.com/en/bitcoin-miner-mara-completes-acquisition-of-ai-infrastructure-provider-exaion/", source: "ForkLog" },
@@ -67,7 +352,7 @@
           <p>${item.description}</p>
           <div class="card-footer">
             <span class="source">${item.source}</span>
-            <a href="${item.url}" target="_blank">Читать →</a>
+            <a href="${item.url}" target="_blank">Читать</a>
           </div>
         </article>
       `).join('');
@@ -78,11 +363,18 @@
       btn.textContent = 'Загрузка...';
       btn.disabled = true;
       
-      // Показываем русские новости (как в твоей утренней рассылке)
       renderNews(RU_NEWS);
       
-      document.getElementById('lastUpdated').textContent = 'Обновлено: ' + new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow', hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' });
-      btn.textContent = '🔄 Обновить';
+      const now = new Date();
+      document.getElementById('lastUpdated').textContent = now.toLocaleString('ru-RU', { 
+        timeZone: 'Europe/Moscow', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        day: 'numeric', 
+        month: 'short' 
+      });
+      
+      btn.textContent = 'Обновить';
       btn.disabled = false;
     }
     
