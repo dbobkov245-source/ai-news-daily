@@ -9,17 +9,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-deep: #050505;
-      --bg-card: #0f0f0f;
-      --bg-card-hover: #161616;
-      --text-primary: #f5f5f5;
-      --text-secondary: #888888;
-      --accent: #00ff88;
-      --accent-dim: #00cc6a;
-      --accent-glow: rgba(0, 255, 136, 0.15);
-      --border: #1a1a1a;
-      --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
-      --gradient-2: linear-gradient(180deg, transparent 0%, rgba(0, 255, 136, 0.03) 100%);
+      --bg-deep: #f8f7f4;
+      --bg-card: #ffffff;
+      --bg-card-hover: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6b6b6b;
+      --accent: #00a86b;
+      --accent-dim: #008f5a;
+      --accent-glow: rgba(0, 168, 107, 0.08);
+      --border: #e5e3df;
+      --gradient-1: linear-gradient(135deg, #00a86b 0%, #00b4d8 100%);
+      --gradient-2: linear-gradient(180deg, transparent 0%, rgba(0, 168, 107, 0.03) 100%);
     }
     
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,7 +33,7 @@
       overflow-x: hidden;
     }
     
-    /* Atmospheric background */
+    /* Atmospheric background - light version */
     body::before {
       content: '';
       position: fixed;
@@ -43,13 +43,13 @@
       bottom: 0;
       background: 
         radial-gradient(ellipse 80% 50% at 50% -20%, var(--accent-glow) 0%, transparent 50%),
-        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(0, 204, 255, 0.05) 0%, transparent 40%),
+        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(0, 180, 216, 0.05) 0%, transparent 40%),
         repeating-linear-gradient(
           0deg,
           transparent,
           transparent 2px,
-          rgba(255, 255, 255, 0.008) 2px,
-          rgba(255, 255, 255, 0.008) 4px
+          rgba(0, 0, 0, 0.015) 2px,
+          rgba(0, 0, 0, 0.015) 4px
         );
       pointer-events: none;
       z-index: -1;
@@ -194,7 +194,7 @@
       background: var(--bg-card-hover);
       transform: translateY(-2px);
       border-color: var(--accent-dim);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
     }
     
     .news-card:hover::before {
